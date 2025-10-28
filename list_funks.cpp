@@ -45,6 +45,40 @@ List_error list_size_increase(List *list) {
         return LIST_NO_ERROR;
 }
 
+List_error list_init(List *list, size_t list_size) {
+    assert(list != NULL);
+
+    list->data = (double*)calloc(list_size, sizeof(double));
+    list->next = (int*)calloc(list_size, sizeof(int));
+    list->prev = (int*)calloc(list_size, sizeof(int));
+    if (list->data == NULL || list->next == NULL || list->prev == NULL) {
+        printf("Calloc не сработал \n");
+        return LIST_MEMORY_ERROR;
+    }
+
+    list->next[0] = 0;
+    list->prev[0] = 0;
+
+    for (size_t i = 1; i < list_size - 1; i++) {
+        list->next[i] = i + 1;
+        list->prev[i] = -1;
+    }
+    list->next[list_size - 1] = 0;
+    list->prev[list_size - 1] = -1;
+
+    list->head = 0;
+    list->tail = 0;
+    list->free = 1;
+    list->capacity = list_size;
+
+    List_error err = list_verify(list);
+    if (err != LIST_NO_ERROR) {
+        //list_dump(stk, err);
+        return err;
+    }
+    return LIST_NO_ERROR;
+}
+
 int list_insert(List *list, int index, double value) {
     assert(list != NULL);
     List_error err = list_verify(list);
@@ -87,44 +121,10 @@ int list_insert(List *list, int index, double value) {
 
     }
 
-
     return free_index;
 
 }
 
-List_error list_init(List *list, size_t list_size) {
-    assert(list != NULL);
-
-    list->data = (double*)calloc(list_size, sizeof(double));
-    list->next = (int*)calloc(list_size, sizeof(int));
-    list->prev = (int*)calloc(list_size, sizeof(int));
-    if (list->data == NULL || list->next == NULL || list->prev == NULL) {
-        printf("Calloc не сработал \n");
-        return LIST_MEMORY_ERROR;
-    }
-
-    list->next[0] = 0;
-    list->prev[0] = 0;
-
-    for (size_t i = 1; i < list_size - 1; i++) {
-        list->next[i] = i + 1;
-        list->prev[i] = -1;
-    }
-    list->next[list_size - 1] = 0;
-    list->prev[list_size - 1] = -1;
-
-    list->head = 0;
-    list->tail = 0;
-    list->free = 1;
-    list->capacity = list_size;
-
-    List_error err = list_verify(list);
-    if (err != LIST_NO_ERROR) {
-        //list_dump(stk, err);
-        return err;
-    }
-    return LIST_NO_ERROR;
-}
 
 List_error list_delete(List *list, int index) {
     assert(list != NULL);
@@ -151,13 +151,12 @@ List_error list_delete(List *list, int index) {
         list->next[list->prev[index]] = list->next[index];
         list->prev[list->next[index]] = list->prev[index];
     }
+    
     list->data[index] = 0;
     list->next[index] = list->free;
     list->prev[index] = -1;
     list->free = index; // НАДО?
     return LIST_NO_ERROR;
-
-
 }
 
 void list_output_errrors(List *list) {
@@ -194,7 +193,11 @@ void list_output_errrors(List *list) {
             printf("FATAL ERROR\n");
     }
     return;
+
+
 }
+
+
 
 List_error list_verify(List *list) {
 
