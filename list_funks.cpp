@@ -94,7 +94,7 @@ int list_insert_after(List *list, int index, double value) {
         return -1;
     }
 
-    if (list->free == -1) { //todo поч -1
+    if (list->free == -1) { 
         printf("Нет свободного места для вставки\n");
         list_size_increase(list);
         //return LIST_INSERT_ERROR;
@@ -113,7 +113,7 @@ int list_insert_after(List *list, int index, double value) {
 
    
     list_dump(list);
-    return list->free; //todo что должно возвращать 
+    return new_ind; //todo что должно возвращать 
 
 }
 
