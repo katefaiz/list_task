@@ -35,7 +35,7 @@ List_error list_dump(List *list) {
     
     free(buffer);
 
-    FILE *html_file = fopen("dump.html", "w");
+    FILE *html_file = fopen("dump.html", "a");
     dump_make_html(list, html_file, id); //todo как сделать так, чтобы каждый раз не открывать файл, у меня записывается в итогу только последнее значение 
     fclose(html_file);
 
@@ -127,8 +127,38 @@ List_error dump_create_invisedge(List *list, FILE *filestream) { //невиди�
 List_error dump_make_html(List *list, FILE *html_file, int test_id) {
     assert(list != NULL);
     assert(html_file != NULL);
-
+    
     fprintf(html_file, "<pre>\n<hr>\n    <font size=\"10\"> ");
+    fprintf(html_file, "LIST_DUMP\n");
+
+    fprintf(html_file, "    data : ");
+    for (size_t i = 0; i < list->capacity; i++) {
+        if (i != list->capacity - 1) {
+            fprintf(html_file, "%g, ", list->data[i]);
+        } else {
+            fprintf(html_file, "%g", list->data[i]);
+        }
+    }
+    fprintf(html_file, "\n");
+    fprintf(html_file, "    next : ");
+    for (size_t i = 0; i < list->capacity; i++) {
+        if (i != list->capacity - 1) {
+            fprintf(html_file, "%d, ", list->next[i]);
+        } else {
+            fprintf(html_file, "%d", list->next[i]);
+        }
+    }
+    fprintf(html_file, "\n");
+    fprintf(html_file, "    prev : ");
+    for (size_t i = 0; i < list->capacity; i++) {
+        if (i != list->capacity - 1) {
+            fprintf(html_file, "%d, ", list->prev[i]);
+        } else {
+            fprintf(html_file, "%d", list->prev[i]);
+        }
+    }
+    fprintf(html_file, "\n");
+
     fprintf(html_file, "<img src=test%d.png>\n", test_id);
 
     return LIST_NO_ERROR;
