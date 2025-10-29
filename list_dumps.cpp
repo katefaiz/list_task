@@ -78,7 +78,7 @@ List_error dump_create_edge(List *list, FILE *filestream) {
     assert(list != NULL);
     assert(filestream != NULL);
 
-    dump_create_invisedge(list, filestream);
+    //dump_create_invisedge(list, filestream);
     //next edge - синие
     fprintf(filestream, "\tedge[color=blue];\n  ");
     
@@ -92,22 +92,21 @@ List_error dump_create_edge(List *list, FILE *filestream) {
     fprintf(filestream, "\n\tedge[color=gray]\n");
 
     fprintf(filestream, "\tnode0 -> node%d\n  ", list->prev[0]);
-    for (int i = list->prev[0]; i != 0; i = list->prev[i]) { //почему i!=0
+    for (int i = list->prev[0]; i != 0; i = list->prev[i]) { 
         fprintf(filestream, "\tnode%d -> node%d\n", i, list->prev[i]);
     }
     //free edge - зеленые
     fprintf(filestream, "\n\tedge[color=green]\n");
 
     fprintf(filestream, "\tnode%d\n", list->free);
-    int end_ind = 0;
-    for (int i = list->free; list->next[i] != 0; i = list->next[i]) {
+
+    for (int i = list->free; i != 0; i = list->next[i]) {
+        fprintf(filestream, "\tnode%d [fillcolor=\"lightgreen\"]\n", i);
+    
+    if (list->next[i] != 0) {
         fprintf(filestream, "\tnode%d -> node%d\n", i, list->next[i]);
-        fprintf(filestream, "\tnode%d [fillcolor =\"lightgreen\"]\n", end_ind + 1);
-        end_ind = i;
     }
-    if (end_ind != -1) {
-        fprintf(filestream, "\tnode%d [fillcolor=\"lightgreen\"]\n  ", end_ind + 1);
-    }
+}
     
 
 
