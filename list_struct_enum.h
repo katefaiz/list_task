@@ -3,14 +3,15 @@
 
 #include <math.h>
 
+#define POIZON -666
 
 struct List {
     double *data;
     int *next;
     int *prev;
-    int head;
-    int tail;
     int free;
+    // int head;
+    // int tail;
     size_t capacity;
 
 };
@@ -24,7 +25,8 @@ enum List_error {
     LIST_HEAD_ERROR             = 5,
     LIST_TAIL_ERROR             = 6,
     LIST_NEXT_ERROR             = 7,
-    LIST_COMMUNICATION_ERROR    = 8
+    LIST_COMMUNICATION_ERROR    = 8,
+    LIST_FILE_ERROR             = 9 
 };
 
 #endif //LIST
