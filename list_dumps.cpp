@@ -28,7 +28,7 @@ List_error list_dump(List *list) {
 
     fclose(filestream);
     int id = rand();
-    sprintf(buffer, "dot -Tpng graf.dot -o test%d.png", id);//зачем вообще buffer
+    sprintf(buffer, "dot -Tpng graf.dot -o test%d.png", id);
     int status = system(buffer);
     if (status != 0) 
         return LIST_FILE_ERROR;
