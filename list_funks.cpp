@@ -91,7 +91,7 @@ int list_insert_after(List *list, int index, double value) {
     list_dump(list);
     List_error err = list_verify(list);
     if (err != LIST_NO_ERROR) {
-        return -1;
+        return err;
     }
 
     if (list->free == -1) { 
@@ -111,7 +111,10 @@ int list_insert_after(List *list, int index, double value) {
     list->prev[new_ind] = list->prev[old_ind];
     list->prev[old_ind] = new_ind;
 
-   
+    err = list_verify(list);
+    if (err != LIST_NO_ERROR) {
+        return err;
+    }
     list_dump(list);
     return new_ind; //todo что должно возвращать 
 
@@ -120,7 +123,19 @@ int list_insert_after(List *list, int index, double value) {
 List_error list_insert_before(List *list, int index, double value) {
     assert(list != NULL);
 
+    list_dump(list);
+    List_error err = list_verify(list);
+    if (err != LIST_NO_ERROR) {
+        return err;
+    }
+
     list_insert_after(list, list->prev[index], value);
+
+    err = list_verify(list);
+    if (err != LIST_NO_ERROR) {
+        return err;
+    }
+    list_dump(list);
 
     return LIST_NO_ERROR;
 }
@@ -148,7 +163,12 @@ List_error list_delete(List *list, int index) {
 
     list->free = index;
 
+    err = list_verify(list);
+    if (err != LIST_NO_ERROR) {
+        return err;
+    }
     list_dump(list);
+
     return LIST_NO_ERROR;
 }
 
@@ -189,7 +209,6 @@ void list_output_errrors(List *list) {
             printf("FATAL ERROR\n");
     }
     return;
-
 
 }
 
