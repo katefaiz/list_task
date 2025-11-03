@@ -73,8 +73,6 @@ List_error list_init(List *list, size_t list_size) {
     }
     list->next[list_size - 1] = 0;
 
-    list->next[0] = 0;
-    list->prev[0] = 0;
     list->free = 1;
     list->capacity = list_size;
 
