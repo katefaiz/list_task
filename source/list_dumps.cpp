@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <math.h>
 
-#include "list_struct_enum.h"
+#include "list_types.h"
 #include "list_dumps.h"
 
 List_error list_dump(List *list) {
@@ -28,7 +28,7 @@ List_error list_dump(List *list) {
 
     fclose(filestream);
     int id = rand();
-    sprintf(buffer, "dot -Tpng graf.dot -o test%d.png", id);
+    sprintf(buffer, "dot -Tpng graf.dot -o png/test%d.png", id);
     int status = system(buffer);
     if (status != 0) 
         return LIST_FILE_ERROR;
@@ -36,7 +36,7 @@ List_error list_dump(List *list) {
     free(buffer);
 
     FILE *html_file = fopen("dump.html", "a");
-    dump_make_html(list, html_file, id); //todo как сделать так, чтобы каждый раз не открывать файл, у меня записывается в итогу только последнее значение 
+    dump_make_html(list, html_file, id); 
     fclose(html_file);
 
 

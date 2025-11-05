@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "list_struct_enum.h"
+#include "list_types.h"
 #include "list_funks.h"
 #include "list_dumps.h"
 

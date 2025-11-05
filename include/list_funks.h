@@ -1,7 +1,7 @@
 #ifndef LISTF_H
 #define LISTF_H
 
-#include "list_struct_enum.h"
+#include "list_types.h"
 
 //int get_free_cell(List *list);
 List_error list_size_increase(List *list);

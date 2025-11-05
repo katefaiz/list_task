@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "list_struct_enum.h"
+#include "list_types.h"
 
 List_error list_dump(List *list);
 List_error dump_create_edge(List *list, FILE *filestream);
