@@ -19,6 +19,7 @@ List_error list_dump(List *list) {
     dump_create_edge(list, filestream);
     fprintf(filestream, "}");
 
+    fclose(filestream);
 
     char* buffer = (char*)calloc(1024, sizeof(char));
     if (buffer == NULL) {
@@ -26,7 +27,6 @@ List_error list_dump(List *list) {
         return LIST_MEMORY_ERROR;
     }
 
-    fclose(filestream);
     int id = rand();
     sprintf(buffer, "dot -Tpng graf.dot -o png/test%d.png", id);
     int status = system(buffer);
@@ -50,8 +50,6 @@ List_error list_dump_base(List *list, FILE *filestream) {
 
     fprintf(filestream, "digraph List {\n");
     fprintf(filestream, "\trankdir=LR\n");
-    // fprintf(filestream, "\tnode [shape=record, style=filled];\n");
-    // fprintf(filestream, "\tedge [arrowhead=vee];\n");
 
     return LIST_NO_ERROR;
 
@@ -61,12 +59,15 @@ List_error dump_create_node(List *list, FILE *filestream) {
     assert(list != NULL);
     assert(filestream != NULL);
 
-    fprintf(filestream, "\tnode0 [shape=Mrecord, style=\"rounded, filled\", label=\"0 | %g | next=%d | prev=%d\", fillcolor=\"grey\"];\n", list->data[0], list->next[0], list->prev[0]);
+    fprintf(filestream, "\tnode0 [shape=Mrecord, style=\"rounded, filled\", label=\"0 | %g | next=%d | prev=%d\", fillcolor=\"grey\"];\n",
+                                                                         list->data[0], list->next[0], list->prev[0]);
     for (size_t i = 1; i < list->capacity; i++) {
         if (list->prev[i] == -1) { // свободные - зеленые
-            fprintf(filestream, "\tnode%zu [shape=Mrecord, style=\"rounded, filled\", label=\"%zu | %g | next=%d | prev=%d\", fillcolor=\"lightgreen\"];\n", i, i, list->data[i], list->next[i], list->prev[i]);
+            fprintf(filestream, "\tnode%zu [shape=Mrecord, style=\"rounded, filled\", label=\"%zu | %g | next=%d | prev=%d\", fillcolor=\"lightgreen\"];\n", 
+                                        i,                                              i, list->data[i], list->next[i], list->prev[i]);
         } else { // занятые - голубые
-            fprintf(filestream, "\tnode%zu [shape=Mrecord, style=\"rounded, filled\", label=\"%zu | %g | next=%d | prev=%d\", fillcolor=\"lightblue\"];\n", i, i, list->data[i], list->next[i], list->prev[i]);
+            fprintf(filestream, "\tnode%zu [shape=Mrecord, style=\"rounded, filled\", label=\"%zu | %g | next=%d | prev=%d\", fillcolor=\"lightblue\"];\n", 
+                                        i,                                              i, list->data[i], list->next[i], list->prev[i]);
         }
     }
 

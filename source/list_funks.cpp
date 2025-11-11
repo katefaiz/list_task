@@ -25,8 +25,8 @@ List_error list_size_increase(List *list) {
 
     size_t new_capacity = list->capacity * 2;
     double* new_data = (double*)realloc(list->data, new_capacity * sizeof(double));
-    int* new_next = (int*)realloc(list->next, new_capacity * sizeof(int));
-    int* new_prev = (int*)realloc(list->prev, new_capacity * sizeof(int));
+    int*    new_next = (int*)   realloc(list->next, new_capacity * sizeof(int));
+    int*    new_prev = (int*)   realloc(list->prev, new_capacity * sizeof(int));
     if (new_data == NULL || new_next == NULL || new_prev == NULL) {
         printf("Не сработал realloc\n");
         return LIST_MEMORY_ERROR;
@@ -231,9 +231,8 @@ List_error list_verify(List *list) {
 
     if (list->next[0] != 0) {
         int current_ind = list->next[0];
-        int cnt = 0;
 
-        while(current_ind != 0 && cnt < (int)list->capacity) {
+        for(int cnt = 0; current_ind != 0 && cnt < (int)list->capacity; cnt++) {
             if (list->next[current_ind] >= (int)list->capacity)
                 return LIST_NEXT_ERROR;
 
@@ -241,7 +240,6 @@ List_error list_verify(List *list) {
                 return LIST_COMMUNICATION_ERROR;
             
             current_ind = list->next[current_ind];
-            cnt++;
         }
 
     }
