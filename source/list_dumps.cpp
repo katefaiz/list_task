@@ -159,7 +159,7 @@ List_error dump_make_html(List *list, FILE *html_file, int test_id) {
     }
     fprintf(html_file, "\n");
 
-    fprintf(html_file, "<img src=test%d.png>\n", test_id);
+    fprintf(html_file, "<img src=png/test%d.png>\n", test_id);
 
     return LIST_NO_ERROR;
 }
