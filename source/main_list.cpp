@@ -10,8 +10,6 @@
 
 int main() {
     List list;
-
-    
     list_init(&list, 10);
     
     list_insert_after(&list, 0, 10);

@@ -45,7 +45,7 @@ List_error list_size_increase(List *list) {
         }
         list->next[new_capacity - 1] = 0;
         list->prev[new_capacity - 1] = -1;
-        list->next[last_free] = (int)list->capacity;
+        list->next[last_free]        = (int)list->capacity;
 
         list->capacity = new_capacity;
         return LIST_NO_ERROR;
@@ -55,8 +55,8 @@ List_error list_init(List *list, size_t list_size) {
     assert(list != NULL);
 
     list->data = (double*)calloc(list_size, sizeof(double));
-    list->next = (int*)calloc(list_size, sizeof(int));
-    list->prev = (int*)calloc(list_size, sizeof(int));
+    list->next = (int*)   calloc(list_size, sizeof(int));
+    list->prev = (int*)   calloc(list_size, sizeof(int));
     if (list->data == NULL || list->next == NULL || list->prev == NULL) {
         printf("Calloc не сработал \n");
         return LIST_MEMORY_ERROR;
@@ -100,10 +100,10 @@ int list_insert_after(List *list, int index, double value) {
     int new_ind = list->free; //первая свободная
     int old_ind = list->next[index]; //старый следующий - тот,что раньше был после index
 
-    list->free = list->next[new_ind];
+    list->free          = list->next[new_ind];
     list->data[new_ind] = value;
 
-    list->next[index] = new_ind;
+    list->next[index]   = new_ind;
     list->next[new_ind] = old_ind;
 
     list->prev[new_ind] = list->prev[old_ind];
@@ -119,7 +119,7 @@ int list_insert_after(List *list, int index, double value) {
 }
 
 List_error list_insert_before(List *list, int index, double value) {
-    assert(list != NULL);
+    assert(list);
 
     list_dump(list);
     List_error err = list_verify(list);
@@ -156,8 +156,8 @@ List_error list_delete(List *list, int index) {
     list->next[prev_ind] = next_ind;
     list->prev[next_ind] = prev_ind;
 
-    list->next[index] = list->free;
-    list->prev[index] = -1;
+    list->next[index]    = list->free;
+    list->prev[index]    = -1;
 
     list->free = index;
 
@@ -265,7 +265,7 @@ List_error list_destroy(List *list) {
     list->next = NULL;
     list->prev = NULL;
 
-    list->free = 0;
+    list->free     = 0;
     list->capacity = 0;
 
     return LIST_NO_ERROR;

@@ -45,8 +45,8 @@ List_error list_dump(List *list) {
 }
 
 List_error list_dump_base(List *list, FILE *filestream) {
-    assert(list != NULL);
-    assert(filestream != NULL);
+    assert(list);
+    assert(filestream);
 
     fprintf(filestream, "digraph List {\n");
     fprintf(filestream, "\trankdir=LR\n");
@@ -56,8 +56,8 @@ List_error list_dump_base(List *list, FILE *filestream) {
 }
 
 List_error dump_create_node(List *list, FILE *filestream) {
-    assert(list != NULL);
-    assert(filestream != NULL);
+    assert(list);
+    assert(filestream);
 
     fprintf(filestream, "\tnode0 [shape=Mrecord, style=\"rounded, filled\", label=\"0 | %g | next=%d | prev=%d\", fillcolor=\"grey\"];\n",
                                                                          list->data[0], list->next[0], list->prev[0]);
@@ -76,16 +76,17 @@ List_error dump_create_node(List *list, FILE *filestream) {
 }
 
 List_error dump_create_edge(List *list, FILE *filestream) {
-    assert(list != NULL);
-    assert(filestream != NULL);
+    assert(list);
+    assert(filestream);
 
     //dump_create_invisedge(list, filestream);
     //next edge - синие
     fprintf(filestream, "\tedge[color=blue];\n  ");
-    
+
     fprintf(filestream, "\tnode0 -> node%d\n  ", list->next[0]);
     for (int i = list->next[0]; i != 0; i = list->next[i]) { 
-        fprintf(filestream, "\tnode%d -> node%d\n", i, list->next[i]);
+        fprintf(filestream, "\tnode%d -> node%d\n", 
+                                    i,   list->next[i]);
         
     }
 
@@ -94,7 +95,8 @@ List_error dump_create_edge(List *list, FILE *filestream) {
 
     fprintf(filestream, "\tnode0 -> node%d\n  ", list->prev[0]);
     for (int i = list->prev[0]; i != 0; i = list->prev[i]) { 
-        fprintf(filestream, "\tnode%d -> node%d\n", i, list->prev[i]);
+        fprintf(filestream, "\tnode%d -> node%d\n", 
+                                    i,   list->prev[i]);
     }
     //free edge - зеленые
     fprintf(filestream, "\n\tedge[color=green]\n");
@@ -105,7 +107,8 @@ List_error dump_create_edge(List *list, FILE *filestream) {
         fprintf(filestream, "\tnode%d [fillcolor=\"lightgreen\"]\n", i);
     
     if (list->next[i] != 0) {
-        fprintf(filestream, "\tnode%d -> node%d\n", i, list->next[i]);
+        fprintf(filestream, "\tnode%d -> node%d\n", 
+                                    i,    list->next[i]);
     }
 }
     
@@ -115,10 +118,11 @@ List_error dump_create_edge(List *list, FILE *filestream) {
 
 }
 List_error dump_create_invisedge(List *list, FILE *filestream) { //невидимые стрелки - не работают 
-    assert(list != NULL);
-    assert(filestream != NULL);
+    assert(list);
+    assert(filestream);
     for (int i = list->next[0]; i != 0; i = list->next[i]) {
-        fprintf(filestream, "\tnode%d -> node%d [style = \"invis\"]\n", i, i+1);
+        fprintf(filestream, "\tnode%d -> node%d [style = \"invis\"]\n", 
+                                    i,       i+1);
     }
     fprintf(filestream, "\n");
 
